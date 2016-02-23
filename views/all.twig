@@ -1,0 +1,54 @@
+{% include 'header.twig' %}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-8 col-md-8 col-lg-8">
+      <h1>All News</h1>
+    </div>
+
+    <div class="col-sm-4 col-md-4 col-lg-2">
+      <br/>
+      <select class="form-control" id="article-sources">
+        <option value="All">All Sources</option>
+        {% for feed in feeds %}
+          <option>{{feed.name}}</option>
+        {% endfor %}
+      </select>
+      <br/>
+    </div>
+    <div class="col-sm-4 col-md-4 col-lg-2">
+      <br/>
+      <select class="form-control" id="article-categories">
+        <option value="All">All Categories</option>
+        {% for cat in categories %}
+          <option>{{cat}}</option>
+        {% endfor %}
+      </select>
+      <br/>
+    </div>
+
+  </div>
+
+  <ul class="list-unstyled">
+  {% for article in articles %}
+    <li class='col-lg-2 col-md-3 col-sm-4 col-xs-12 article-wrap' feed-name="{{article.feedName}}" feed-category="{{article.feedCategory}}">
+      {% if article.thumbnail is not empty %}
+      <div class="col-xs-12 well article has-background" style="background-size:cover;background-image:url({{article.thumbnail}})">
+        <div class="darken"></div>
+      {% else %}
+      <div class="col-xs-12 well article">
+      {% endif %}
+        <div class='content'>
+          <a href="{{article.link}}" target="_blank">
+            <h3>{{article.title}}</h3>
+          </a>
+          <p>{{article.published|date("m/d/Y")}}</p>
+        </div>
+      </div>
+    </li>
+  {% endfor %}
+  </ul>
+</div>
+
+
+{% include 'footer.twig' %}

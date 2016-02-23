@@ -1,0 +1,34 @@
+{% include 'header.twig' %}
+
+<div class="container-fluid">
+  <h1>All News</h1>
+  <ul class="list-unstyled">
+  {% for feed in feeds %}
+    <li class="row">
+      <div class="col-xs-12"><h2>{{feed.name}}</h2></div>
+      <ul class="list-unstyled">
+        {% for article in feed.articles %}
+        <li class='col-lg-2 col-md-3 col-sm-4 col-xs-12 article-wrap'>
+          {% if article.thumbnail is not empty %}
+          <div class="col-xs-12 well article has-background" style="background-image:url({{article.thumbnail}})">
+            <div class="darken"></div>
+          {% else %}
+          <div class="col-xs-12 well article">
+          {% endif %}
+            <div class='content'>
+              <a href="{{article.link}}" target="_blank">
+                <h3>{{article.title}}</h3>
+              </a>
+              <p>{{article.published|date("m/d/Y")}}</p>
+            </div>
+          </div>
+        </li>
+        {% endfor %}
+        </ul>
+    </li>
+  {% endfor %}
+  </ul>
+</div>
+
+
+{% include 'footer.twig' %}
