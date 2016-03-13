@@ -105,4 +105,8 @@ ul.all-articles .article:hover {
   .article {
     padding:15px;
   }
+  .navbar-form {
+    margin:0px;
+    margin-right:0px;
+  }
 }
