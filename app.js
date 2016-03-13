@@ -152,11 +152,11 @@ var feeds = [
   //   url: "http://www.popularmechanics.com/",
   //   category: "News"
   // },
-  {
-    name:"Phys.org - Computer Science",
-    url: "http://phys.org/rss-feed/technology-news/computer-sciences/",
-    category: "Science",
-  },
+  // {
+  //   name:"Phys.org - Computer Science",
+  //   url: "http://phys.org/rss-feed/technology-news/computer-sciences/",
+  //   category: "Science",
+  // },
   {
     name:"The Atlantic",
     rss: "http://feeds.feedburner.com/TheAtlantic",
@@ -372,7 +372,15 @@ app.set("twig options", {
 // });
 app.get('/', function(req, res){
   res.render('all.twig', {
-    page_title: "Feeds",
+    page_title: "SweetNews",
+    feeds : feeds,
+    articles: getAllArticles(),
+    categories: getAllCategories()
+  });
+});
+app.get('/cats', function(req, res){
+  res.render('all-cats.twig', {
+    page_title: "SweetNews",
     feeds : feeds,
     articles: getAllArticles(),
     categories: getAllCategories()

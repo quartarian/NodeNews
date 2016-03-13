@@ -1,0 +1,92 @@
+{% include 'header.twig' %}
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">SweetNews</a>
+    </div>
+
+    <form class="navbar-form form-inline pull-right">
+        <div class="btn-group">
+        <a href="/" type="button" class="btn btn-success">Date</a>
+        <a href="/cats" type="button" class="btn btn-success disabled">Source</a>
+        </div>
+    </form>
+  </div><!-- /.container-fluid -->
+</nav>
+
+{#
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-8 col-md-8 col-lg-8">
+      <h1>All News</h1>
+    </div>
+
+    <div class="col-sm-4 col-md-4 col-lg-2">
+
+      <br/>
+      <select class="form-control" id="article-sources">
+        <option value="All">All Sources</option>
+        {% for feed in feeds %}
+          <option>{{feed.name}}</option>
+        {% endfor %}
+      </select>
+      <br/>
+    </div>
+    <div class="col-sm-4 col-md-4 col-lg-2">
+      <br/>
+      <select class="form-control" id="article-categories">
+        <option value="All">All Categories</option>
+        {% for cat in categories %}
+          <option>{{cat}}</option>
+        {% endfor %}
+      </select>
+      <br/>
+    </div>
+    </div>
+  </div>
+</div>
+#}
+
+<div class="container-fluid">
+  {% for feed in feeds %}
+  <div class="row">
+    <div class="col-sm-12">
+      <h2>{{feed.name}}</h2>
+    </div>
+    <div class="nano" id="feed-{{loop.index}}">
+      <div class="cat-list nano-content">
+          <ul class="list-unstyled all-articles-cat-list">
+          {% for article in articles %}
+            {% if article.feedName == feed.name %}
+            <li
+              class='article-wrap' feed-name="{{article.feedName}}" feed-category="{{article.feedCategory}}">
+                {% if article.thumbnail is not empty %}<div
+                class="article has-background" data-original="{{article.thumbnail}}">
+                {% else %}<div
+                class="article">
+                {% endif %}
+                <div class="darken"></div>
+                <div
+                  class='content'>
+                    <a href="{{article.link}}" target="_blank">
+                      <h3>{{article.title}}</h3>
+                    </a>
+                    <p>{{article.published|date("m/d/Y")}}</p>
+                  </div>
+                </div>
+              </li>
+            {% endif %}
+          {% endfor %}
+          </ul>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<br/><br/><br/><br/>
+
+
+
+{% include 'footer.twig' %}
