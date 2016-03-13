@@ -63,7 +63,7 @@
             <li
               class='article-wrap' feed-name="{{article.feedName}}" feed-category="{{article.feedCategory}}">
                 {% if article.thumbnail is not empty %}<div
-                class="article has-background" data-original="{{article.thumbnail}}">
+                class="article has-background b-lazy" data-src="{{article.thumbnail}}">
                 {% else %}<div
                 class="article">
                 {% endif %}

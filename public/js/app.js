@@ -65,29 +65,30 @@ $(document).ready(function() {
 
 
   function initArticles() {
+    var blazy = null;
 
     // Articles (All)
     if( $(".all-articles").length >= 1) {
-      $(".all-articles .article-wrap .has-background").lazyload({
-        effect : "fadeIn"
-      });
+      bLazy = new Blazy();
     }
     else {
       // Article (Source)
-      $(".cat-list .article-wrap .has-background").lazyload({
-        effect : "fadeIn",
-        threshold: 100
+      blazy = new Blazy({
+        container: '.nano'
       });
-
       $('.nano').perfectScrollbar(); 
     }
 
 
     var $wrap = $(".cat-list");
-    $wrap.find(".has-background").lazyload({
-      effect : "fadeIn",
-      container: $wrap,
+    $wrap.scroll(function() {
+      
+      $(window).trigger('scroll');
     });
+    // $wrap.find(".has-background").lazyload({
+    //   effect : "fadeIn",
+    //   container: $wrap,
+    // });
 
     window.setTimeout(function() {
       $(window).trigger('scroll');
