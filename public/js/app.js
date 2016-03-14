@@ -51,14 +51,14 @@ $(document).ready(function() {
       var totalWidth = 0;
       var maxHeight = 0;
       var $current = $(this);
-      $current.find(".article").attr("style","");
+      $current.find(".article").css("height","auto");
 
       $current.find("li").each(function() {
         totalWidth += $(this).width();
         if($(this).find(".article").height() > maxHeight)
           maxHeight = $(this).height();
       });
-      $current.width(totalWidth+2).find(".article").height(maxHeight);
+      $current.width(totalWidth+10).find(".article").height(maxHeight);
     });
 
   }
@@ -79,42 +79,40 @@ $(document).ready(function() {
       $('.nano').perfectScrollbar(); 
     }
 
-
-    var $wrap = $(".cat-list");
-    $wrap.scroll(function() {
-      
-      $(window).trigger('scroll');
-    });
-    // $wrap.find(".has-background").lazyload({
-    //   effect : "fadeIn",
-    //   container: $wrap,
-    // });
-
-    window.setTimeout(function() {
-      $(window).trigger('scroll');
-    },250);
-
-
-      
-    //   .each(function() {
-    //   var $current = $(this);
-    //   $current.find(".has-background").lazyload({
-    //     effect : "fadeIn"
-    //   });
-    // });
-
+    // Stack articles
     var $container = $('ul.all-articles').masonry({
       itemSelector: 'li.article-wrap',
       gutter: 0,
       // columnWidth: $(window).width()/4,
     });
+
+    // Article Modal
+    $(".article a").click(function(e) {
+      e.preventDefault();
+
+      var snippet  = $(this).parents(".article").find(".snippet");
+      snippet = snippet.clone();
+      snippet.find("img").each(function() {
+        $(this).attr("src",$(this).attr("data-src"));
+      });
+      snippet = snippet.html();
+
+      var title = $(this).find("h3").html();
+
+      $('#article-reader .modal-header h4').html(title);
+      $('#article-reader .modal-body').html(snippet);
+      // "<iframe height='" + $(window).height()*.75 +  "' src='"+$(this).attr("href")+"'></iframe"
+      //
+      $('#article-reader .modal-footer').html(
+        '<a href="'+$(this).attr("href")+'" class="btn btn-primary" target="_blank">Open in Browser</a>'
+      );
+
+      $('#article-reader').modal('show');
+
+
+    });
     
   }
-
-
-
-
-
 
 
 

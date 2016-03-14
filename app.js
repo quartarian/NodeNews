@@ -270,6 +270,16 @@ var updateFeeds = function() {
             if(thumbnail == "") {
               fetchFirstImage(index,i);
             }
+
+            // lazy load images in snippet
+            $("img").each(function(index,element) {
+              $(this).attr("data-src",$(this).attr("src")).addClass("b-lazy").attr("src","nothing.jpg");
+            });
+            $("a").each(function(index,element) {
+              $(this).attr("target","_blank");
+            });
+            feeds[index].articles[i].snippet = $.html();
+            
           }
 
         }

@@ -85,6 +85,23 @@ ul.all-articles .article:hover {
   /* float:none; */
   display:inline-block;
 }
+.snippet {
+  display:none;
+}
+#article-reader iframe {
+  width:100%;
+  border:none;
+}
+#article-reader img {
+  width:100%;
+  height:auto !important;
+  margin-bottom:20px;
+}
+#article-reader .modal-body,
+#article-reader p {
+  font-size:18px;
+  line-height: 1.75em;
+}
 
 /* PHONES */
 @media (max-width: 768px) {
