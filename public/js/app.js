@@ -90,19 +90,21 @@ $(document).ready(function() {
     $(".article a").click(function(e) {
       e.preventDefault();
 
-      var snippet  = $(this).parents(".article").find(".snippet");
-      snippet = snippet.clone();
-      snippet.find("img").each(function() {
-        $(this).attr("src",$(this).attr("data-src"));
-      });
-      snippet = snippet.html();
-
+      // var snippet  = $(this).parents(".article").find(".snippet");
+      // snippet = snippet.clone();
+      // snippet.find("img").each(function() {
+      //   $(this).attr("src",$(this).attr("data-src"));
+      // });
+      // snippet = snippet.html();
+      
       var title = $(this).find("h3").html();
 
+      // Body
+      $.get( "/data?title="+title, function( data ) {
+        $('#article-reader .modal-body').html(data);
+      });
+
       $('#article-reader .modal-header h4').html(title);
-      $('#article-reader .modal-body').html(snippet);
-      // "<iframe height='" + $(window).height()*.75 +  "' src='"+$(this).attr("href")+"'></iframe"
-      //
       $('#article-reader .modal-footer').html(
         '<a href="'+$(this).attr("href")+'" class="btn btn-primary" target="_blank">Open in Browser</a>'
       );

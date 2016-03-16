@@ -110,7 +110,7 @@ var feeds = [
     rss: "http://www.newyorker.com/rss",
     category: "News",
     query: ".gallery-wrapper img",
-    queryAttr: "data-thumbnail-src",
+    queryAttr: ".html()data-thumbnail-src",
     query2: ".featured img"
   },
   {
@@ -261,7 +261,8 @@ var updateFeeds = function() {
               && thumbnail.indexOf("rc.img") < 0
               && thumbnail.indexOf("b.gif") < 0
               && thumbnail.indexOf("ScientificAmerican-News") < 0
-              && thumbnail.indexOf("DiscoveryNews-Top-Stories") < 0)
+              && thumbnail.indexOf("DiscoveryNews-Top-Stories") < 0
+              && thumbnail.indexOf("feedburner") < 0)
               feeds[index].articles[i].thumbnail = thumbnail;
             else
               thumbnail = '';
@@ -271,14 +272,63 @@ var updateFeeds = function() {
               fetchFirstImage(index,i);
             }
 
-            // lazy load images in snippet
+            // Remove bad images
             $("img").each(function(index,element) {
-              $(this).attr("data-src",$(this).attr("src")).addClass("b-lazy").attr("src","nothing.jpg");
+              if($(this).attr("src").indexOf("feedburner") >= 0) {
+                $(this).remove();
+              }
+              else if($(this).attr("src").indexOf("pixel.wp.com") >= 0) {
+                $(this).remove();
+              }
+              else if($(this).attr("src").indexOf("c.statcounter.com") >= 0) {
+                $(this).remove();
+              }
+              // else if($(this).attr("src").indexOf("feedsportal") >= 0) {
+              //   $(this).remove();
+              // }
+              else if($(this).attr("src").indexOf("rss.cnn.com") >= 0) {
+                $(this).remove();
+              }
+              // else if($(this).attr("src").indexOf("feeds.huffingtonpost.com") >= 0) {
+              //   $(this).remove();
+              // }
+              // else if($(this).attr("src").indexOf("feeds.newscientist.com") >= 0) {
+              //   $(this).remove();
+              // }
+              else if($(this).attr("src").indexOf("feeds") >= 0) {
+                $(this).remove();
+              }
             });
+            //Remove bad links
+            $("a").each(function(index,element) {
+              if(typeof $(this).attr("href") !== "undefined") {
+                if( $(this).attr("href").indexOf("feedsportal") >= 0) {
+                  $(this).remove();
+                }
+              }
+            });
+            $("br").each(function(index,element) {
+              $(this).remove();
+            });
+            
             $("a").each(function(index,element) {
               $(this).attr("target","_blank");
             });
-            feeds[index].articles[i].snippet = $.html();
+
+            // Generate Snippet
+            if(feeds[index]['name'] == "AP Top Stories" || feeds[index]['name'] == "AP Science") {
+              console.log(feeds[index].articles);
+              var j = i;
+
+              request(feeds[index].articles[j]['link'], function (error, response, html) {
+                $ = cheerio.load(html);
+                  feeds[index].articles[j]['snippet'] = $("#dateLine").parents("div").html();
+              });
+            }
+            // Get Snipped from feed
+            else {
+              feeds[index].articles[i]['snippet'] = $.html();
+            }
             
           }
 
@@ -395,6 +445,16 @@ app.get('/cats', function(req, res){
     articles: getAllArticles(),
     categories: getAllCategories()
   });
+});
+app.get('/data', function(req, res){
+  for(var i = 0; i < feeds.length; i++) {
+    for(var j = 0; j < feeds[i]['articles'].length; j++) {
+      if(feeds[i]['articles'][j]['title'] == req.query.title){
+        res.json(feeds[i]['articles'][j]['snippet']);
+      }
+    }
+  }
+  res.json("");
 });
  
 app.listen(8000);
