@@ -98,6 +98,7 @@ $(document).ready(function() {
       // snippet = snippet.html();
       
       var title = $(this).find("h3").html();
+      $('#article-reader .modal-body').html("");
 
       // Body
       $.get( "/data?title="+title, function( data ) {
