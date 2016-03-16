@@ -126,7 +126,7 @@ var feeds = [
     query: "#content-wrap img.media-hero"
   },
   {
-    name:"Smithsonian Science.",
+    name:"Smithsonian Science",
     rss: "http://smithsonianscience.si.edu/feed/",
     category: "Science",
   },
@@ -448,9 +448,11 @@ app.get('/cats', function(req, res){
 });
 app.get('/data', function(req, res){
   for(var i = 0; i < feeds.length; i++) {
-    for(var j = 0; j < feeds[i]['articles'].length; j++) {
-      if(feeds[i]['articles'][j]['title'] == req.query.title){
-        res.json(feeds[i]['articles'][j]['snippet']);
+    if(typeof(feeds[i].articles) !== 'undefined') {
+      for(var j = 0; j < feeds[i]['articles'].length; j++) {
+        if(feeds[i]['articles'][j]['title'] == req.query.title){
+          res.json(feeds[i]['articles'][j]['snippet']);
+        }
       }
     }
   }
